@@ -9,6 +9,13 @@ import {
 } from 'react-native';
 
 export default class OnBoardingScreen extends Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
+
+  _onLogin = () => {
+    this.props.navigation.navigate('LoginScreen')
+  }
   render() {
     return (
       <Pages>
@@ -51,7 +58,7 @@ export default class OnBoardingScreen extends Component {
           />
           <Text style={styles.title}>Apple Pay</Text>
           <Text style={styles.content}>We know you're busy, so you can pay with yourn phone in just one click</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={this._onLogin}>
             <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
         </View>
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#5EA33A',
+    backgroundColor: 'rgb(234, 198, 34)',
   },
   image: {
     width: 100,

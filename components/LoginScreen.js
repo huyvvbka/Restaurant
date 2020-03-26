@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import {
   LoginManager,
@@ -12,6 +14,10 @@ import {
 } from 'react-native-fbsdk'
 import firebase from 'react-native-firebase'
 export default class LoginScreen extends Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -44,7 +50,7 @@ export default class LoginScreen extends Component {
         return firebase.auth().signInWithCredential(credential);
       })
       .then((currentUser) => {
-        // this.props.navigation.navigate('Main');
+        this.props.navigation.navigate('OnBoardingScreen');
       })
       .catch((error) => {
         alert('Login failed with error: ' + error.message);
@@ -60,34 +66,36 @@ export default class LoginScreen extends Component {
       </View>
     };
       return (
-        <View style={styles.container}>
-          <Text style={styles.title}>Sign in</Text>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              textContentType="emailAddress"
-              keyboardType="email-address"
-              placeholder="Enter your email"
-              autoFocus={true}
-              onChangeText={text => this.setState({email: text})}
-              value={this.state.username}></TextInput>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Text style={styles.title}>Sign in</Text>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                style={styles.textInput}
+                textContentType="emailAddress"
+                keyboardType="email-address"
+                placeholder="Enter your email"
+                autoFocus={true}
+                onChangeText={text => this.setState({email: text})}
+                value={this.state.username}></TextInput>
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter your password"
+                secureTextEntry={true}
+                onChangeText={text => this.setState({password: text})}
+                value={this.state.password}></TextInput>
+            </View>
+            <TouchableOpacity style={styles.loginButton} onPress={this.login}>
+              <Text style={styles.loginButtonTitle}>Login</Text>
+            </TouchableOpacity>
+            <Divider style={styles.divider}></Divider>
+            <TouchableOpacity style={styles.facebookButton} onPress={this.loginWithFacebook}>
+              <Text style={styles.loginButtonTitle}>Login with Facebook</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter your password"
-              secureTextEntry={true}
-              onChangeText={text => this.setState({password: text})}
-              value={this.state.password}></TextInput>
-          </View>
-          <TouchableOpacity style={styles.loginButton} onPress={this.login}>
-            <Text style={styles.loginButtonTitle}>Login</Text>
-          </TouchableOpacity>
-          <Divider style={styles.divider}></Divider>
-          <TouchableOpacity style={styles.facebookButton} onPress={this.loginWithFacebook}>
-            <Text style={styles.loginButtonTitle}>Login with Facebook</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableWithoutFeedback>
       );
   }
 }
